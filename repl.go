@@ -7,19 +7,17 @@ import (
 	"strings"
 
 	pokeApi "github.com/TheBarnakhil/pokedex-cli-go/internal/pokeApi"
-	"github.com/TheBarnakhil/pokedex-cli-go/internal/pokecache"
 )
 
 type (
 	cliCommand struct {
 		name        string
 		description string
-		callback    func(*config) error
+		callback    func(*config, ...string) error
 	}
 
 	config struct {
-		pokeapiClient    pokeApi.Client
-		cache            *pokecache.Cache
+		pokeapiClient    *pokeApi.Client
 		nextLocationsURL *string
 		prevLocationsURL *string
 	}
@@ -44,12 +42,18 @@ func startRepl(cfg *config) {
 			continue
 		}
 		commandName := words[0]
+		args := []string{}
 		command, ok := registry[commandName]
 		if !ok {
 			fmt.Println("Unknown command")
 			continue
 		}
-		if err := command.callback(cfg); err != nil {
+
+		if len(words) >= 2 {
+			args = words[1:]
+		}
+
+		if err := command.callback(cfg, args...); err != nil {
 			fmt.Println(err)
 		}
 
@@ -74,9 +78,14 @@ func getCommands() map[string]cliCommand {
 			callback:    commandMapf,
 		},
 		"mapb": {
-			name:        "map",
+			name:        "mapb",
 			description: "Get the previous page of locations",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore <area_name>",
+			description: "Get all the pokemon available in the area provided",
+			callback:    commandExplore,
 		},
 	}
 }

@@ -17,10 +17,8 @@ func (c *Client) GetLocationArea(pageURL *string) (LocationAreaResponse, error) 
 	}
 
 	if data, exists := c.cache.GetFromCache(url); exists {
-		fmt.Println("Printing from cache")
 		finalData = data
 	} else {
-		fmt.Println("Fetching data")
 		req, err := http.NewRequest("GET", url, nil)
 		if err != nil {
 			return LocationAreaResponse{}, fmt.Errorf("error creating request: %w", err)

@@ -2,8 +2,8 @@ package pokecache
 
 import "time"
 
-func NewCache(interval time.Duration) Cache {
-	cache := Cache{
+func NewCache(interval time.Duration) *Cache {
+	cache := &Cache{
 		interval: interval,
 		entry:    map[string]cacheEntry{},
 	}
