@@ -8,7 +8,7 @@ import (
 )
 
 func (c *Client) GetLocationArea(pageURL *string) (LocationAreaResponse, error) {
-	url := baseURL + "/location-area"
+	url := baseURL + locationEndpoint
 
 	var finalData []byte
 

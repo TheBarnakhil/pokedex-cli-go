@@ -8,7 +8,7 @@ import (
 )
 
 func (c *Client) GetPokemonInArea(areaName string) (PokemonInArea, error) {
-	url := baseURL + "/location-area/" + areaName
+	url := baseURL + locationEndpoint + areaName
 
 	var finalData []byte
 
